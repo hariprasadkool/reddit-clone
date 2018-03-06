@@ -1,5 +1,20 @@
 import { Component,Input } from '@angular/core';
 
+
+
+class Article {
+
+  constructor(  public title: string,
+    public description: string) {
+
+  }
+
+
+}
+
+
+
+
 @Component({
   selector: 'app-sidebar',
   template: `
@@ -21,7 +36,8 @@ export class SidebarComponent{
   </div>`
 })
 export class ArticleComponent{
-  @Input() article: Object;
+  // @Input() article: Object;
+  @Input() article: Article;
 }
 
 @Component({
@@ -39,16 +55,19 @@ export class AppComponent {
   articles: Object[];  // Instance of a class AppComponent  or Instance variable for class AppComponent 
 
   constructor() {
-    this.articles = [{
-      title: 'The angular 2  screencast',
-      description: 'The easiest way to learn angular js'
-    }, {
-      title: 'React',
-      description: 'Wanna learn React js'
-    }, {
-      title: 'Vue',
-      description: 'The easiest way to learn angular js'
-    }
+    this.articles = [
+      new Article(
+      'The angular 2  screencast',
+      'The easiest way to learn angular js'
+      ),
+      new Article(
+      'React',
+      'Wanna learn React js'
+      ),
+    new Article(
+      'Vue',
+      'The easiest way to learn angular js'
+    )
   ];
   }
 }

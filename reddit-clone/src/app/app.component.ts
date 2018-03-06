@@ -9,7 +9,9 @@ class Article {
 
   }
 
-
+  public date(): Date {
+    return new Date;
+  }
 }
 
 
@@ -36,13 +38,13 @@ export class SidebarComponent{
   </div>
   <div class="content">
     <div class="header">
-    {{article.title}}
+    {{ article.title }}
     </div>
     <div class="meta">
       Voting and votes will go here
     </div>
     <div class="meta date">
-      Today
+      {{ article.date() | date: 'medium' }}
     </div>
     <div class="meta description">
       <p>{{ article.description }}</p>

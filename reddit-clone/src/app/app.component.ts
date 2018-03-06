@@ -17,6 +17,7 @@ export class SidebarComponent{
   selector: 'app-article',
   template: `<div>
     <h2>{{ article.title }}</h2>
+    <p>{{ article.description }}</p>
   </div>`
 })
 export class ArticleComponent{
@@ -29,18 +30,25 @@ export class ArticleComponent{
     <div id="container">
       <app-sidebar></app-sidebar>
       <div id="content">
-        <app-article [article]="article"></app-article>
+        <app-article *ngFor="let article of articles" [article]="article"></app-article>
       </div>
     </div>
   `
 })
 export class AppComponent {
-  article: Object;  //Instance of a class AppComponent  or Instance variable for class AppComponent 
+  articles: Object[];  // Instance of a class AppComponent  or Instance variable for class AppComponent 
 
-  constructor(){
-    this.article = {
+  constructor() {
+    this.articles = [{
       title: 'The angular 2  screencast',
       description: 'The easiest way to learn angular js'
-    };
+    }, {
+      title: 'React',
+      description: 'Wanna learn React js'
+    }, {
+      title: 'Vue',
+      description: 'The easiest way to learn angular js'
+    }
+  ];
   }
 }

@@ -13,20 +13,6 @@ export class AppComponent {
   constructor(
     private articleService: ArticleService
   ) {
-    this.articles = [
-      new Article(
-      'The angular 2  screencast',
-      'The easiest way to learn angular js',
-      10
-      ),
-      new Article(
-      'React',
-      'Wanna learn React js'
-      ),
-    new Article(
-      'Vue',
-      'The easiest way to learn angular js'
-    )
-  ];
+   this.articles = articleService.getArticles();
   }
 }

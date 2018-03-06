@@ -3,14 +3,26 @@ import { Component, Input } from '@angular/core';
 
 
 class Article {
-
-  constructor(  public title: string,
-    public description: string) {
-
+  public publishedAt: Date;
+  constructor(
+    public title: string,
+    public description: string,
+    public votes?: number
+  ) {
+    this.votes = votes || 0;
+    this.publishedAt = new Date();
   }
 
   public date(): Date {
     return new Date;
+  }
+
+  public voteUp(): void{
+    this.votes = this.votes + 1;
+  }
+
+  public voteDown(): void{
+    this.votes = this.votes - 1;
   }
 }
 
@@ -41,10 +53,29 @@ export class SidebarComponent{
     {{ article.title }}
     </div>
     <div class="meta">
-      Voting and votes will go here
+      <span class="ui blue small label">
+          <i class="heart icon"></i>
+          <div class="detail">
+            {{ article.votes }}
+          </div>
+      </span>
+      <span class="ui right floated">
+        <a 
+        (click)="upvote()"
+        class="ui small label">
+          <i class="arrow up icon"></i>
+          Upvote
+        </a>
+        <a 
+        (click)="downvote()"
+        class="ui small label">
+          <i class="arrow down icon"></i>
+          Downvote
+          </a>
+      </span>
     </div>
     <div class="meta date">
-      {{ article.date() | date: 'medium' }}
+      {{ article.publishedAt | date: 'medium' }}
     </div>
     <div class="meta description">
       <p>{{ article.description }}</p>
@@ -57,7 +88,15 @@ export class SidebarComponent{
 })
 export class ArticleComponent{
   // @Input() article: Object;
-  @Input() article: Article;
+  @Input() article: Article;     // Instance of Article Object
+
+  upvote(){
+    this.article.voteUp();
+  }
+
+  downvote(){
+    this.article.voteDown();
+  }
 }
 
 @Component({
@@ -78,7 +117,8 @@ export class AppComponent {
     this.articles = [
       new Article(
       'The angular 2  screencast',
-      'The easiest way to learn angular js'
+      'The easiest way to learn angular js',
+      10
       ),
       new Article(
       'React',

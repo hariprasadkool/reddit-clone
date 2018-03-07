@@ -14,11 +14,12 @@ export class ArticleListComponent implements OnInit {
   constructor(
     private articleService: ArticleService
   ) {
-   articleService.getArticles()
-    .then( articles => this.articles = articles);
+
   }
 
   ngOnInit() {
+    this.articleService.getArticles()
+    .then( articles => this.articles = articles);
   }
 
 }

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Article } from './article';
+import { Http } from '@angular/http';
 @Injectable()
 export class ArticleService {
 
-  constructor() { }
+  constructor(
+    private http: Http
+  ) { }
 
   public getArticles(): Promise<Article[]> {
     //

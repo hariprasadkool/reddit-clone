@@ -19,3 +19,11 @@ External Libraries -
 website - https://semantic-ui.com
 
 npm repository - https://www.npmjs.com/package/semantic-ui-css
+
+
+Services  of api - 
+
+1) News API - https://newsapi.org
+
+
+

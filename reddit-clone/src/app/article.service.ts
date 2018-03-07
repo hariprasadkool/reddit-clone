@@ -9,16 +9,72 @@ import { environment } from '../environments/environment';
 
 const baseUrl = 'https://newsapi.org';
 const newsApiKey = '93c7586c9e16448c8f83e998603ece62';
+
+/*
+ *[].sort(compare(a,b))
+ * return value
+ * 0 == they are equal in sort
+ * 1 == a comes before b
+ * -1 == b comes before a
+ */
+
+interface ArticleSortFn {
+  (a: Article, b: Article): number;
+}
+
+interface ArticleSortOrderFn {
+  (direction: number): ArticleSortFn;
+}
+
+  const sortByTime: ArticleSortOrderFn = (direction: number) => (a: Article, b: Article) => {
+  return direction * (b.publishedAt.getTime() - a.publishedAt.getTime());
+  };
+
+  const sortByVotes: ArticleSortOrderFn = (direction: number) => (a: Article, b: Article) => {
+  return direction * (b.votes - a.votes);
+  };
+
+  const sortFns = {
+    'Time': sortByTime,
+    'Votes': sortByVotes
+  };
+
 @Injectable()
 export class ArticleService {
 
-  private _articles: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>([]); // creating behaviorSubject in our article service ( BehaviorSubject are not exposed outside the article service )
+  private _articles: BehaviorSubject<Article[]> = new
+  BehaviorSubject<Article[]>([]); // creating behaviorSubject in our article service(BehaviorSubject are not exposed outside the article service)
+
+  private _sortByDirectionSubject: BehaviorSubject<number> = new
+  BehaviorSubject<number>(1);
+  private _sortByFilterSubject: BehaviorSubject<any> = new
+  BehaviorSubject<ArticleSortOrderFn>(sortByTime);
   public articles: Observable<Article[]> = this._articles.asObservable(); // creating observable attribute in our article service
+
+  public orderedArticles: Observable<Article []>;
   constructor(
     private http: Http
-  ) { }
+  ) {
+    this.orderedArticles = Observable.combineLatest(
+      this._articles,
+      this._sortByFilterSubject,
+      this._sortByDirectionSubject
+    )
+    .map(([
+      articles, sorter, direction
+    ]) => {
+      return articles.sort(sorter(direction));
+    });
+  }
 
-  private getArticles(): void {
+  public sortBy(
+    filter: string,
+    direction: number
+  ): void {
+    this._sortByDirectionSubject.next(direction);
+    this._sortByFilterSubject.next(sortFns[filter]);
+  }
+  public getArticles(): void {
     // make the http request -> Observable
     // convert response into article class
     // update our subject

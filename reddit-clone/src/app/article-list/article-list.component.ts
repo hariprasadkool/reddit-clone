@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Article } from '../article';
 import { ArticleService } from '../article.service';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-article-list',
@@ -9,17 +10,17 @@ import { ArticleService } from '../article.service';
 })
 export class ArticleListComponent implements OnInit {
   // @Input() articles: Article[];
-  private articles: Object[];  // Instance of a class AppComponent  or Instance variable for class AppComponent 
+  private articles: Observable<Article[]>;  // Instance of a class AppComponent  or Instance variable for class AppComponent 
 
   constructor(
     private articleService: ArticleService
   ) {
-
+    this.articles = articleService.articles;
   }
 
   ngOnInit() {
-    this.articleService.getArticles()
-    .then( articles => this.articles = articles);
+    this.articleService.getArticles();
+
   }
 
 }

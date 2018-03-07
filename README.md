@@ -20,6 +20,7 @@ website - https://semantic-ui.com
 
 npm repository - https://www.npmjs.com/package/semantic-ui-css
 
+2) Jquery 
 
 Services  of api - 
 
